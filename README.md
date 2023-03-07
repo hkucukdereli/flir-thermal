@@ -15,11 +15,11 @@ pip install setup.py
 ```
 4. Clone this repo.
 ```
-clone https://github.com/hkucukdereli/flir-thermal.git
+git clone https://github.com/hkucukdereli/flir-thermal.git
 cd ~/flir-thermal
 ```
 5. Install as an editable package to allow changes in the future.
 ```
 pip install -e .
 ```
-6. Look under ```/scripts``` for an example.
+6. Look under ```./scripts``` for an example.

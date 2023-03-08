@@ -29,7 +29,7 @@ class flirVideo(ImagerFile):
     
     @property
     def size(self):
-        if self.hasVideo:
+        if self.has_data:
             return f'Num frames: {self.num_frames}, height: {self.height}, width: {self.width}'
         else:
             print('No video data found.')
@@ -43,10 +43,10 @@ class flirVideo(ImagerFile):
         for i in tqdm(frames, total=len(frames), desc='Loading video...'):
             self.get_frame(i)
             self.data[i] = np.array(self.final, copy=False).reshape((self.height, self.width))
-            self.time.append(video.frame_info.time)
+            self.time.append(self.frame_info.time)
             
         self.duration = (self.time[-1] - self.time[0]).total_seconds() # video duration in seconds
-        fps = video.num_frames / video.duration
+        fps = self.num_frames / video.duration
         state = np.argmin([np.abs(fps-60), np.abs(fps-29.97)])
         if state==0:
             self.fps = 60

@@ -17,9 +17,9 @@ setup(
     # long_description=long_description,
     # long_description_content_type="text/markdown",
     license="",
-    url="",
+    url="https://github.com/hkucukdereli/flir-thermal.git",
     version="0.2",
-    download_url="",
+    download_url="https://github.com/hkucukdereli/flir-thermal.git",
     install_requires=[
         "numpy",
         "tqdm",

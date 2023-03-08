@@ -46,7 +46,7 @@ class flirVideo(ImagerFile):
             self.time.append(self.frame_info.time)
             
         self.duration = (self.time[-1] - self.time[0]).total_seconds() # video duration in seconds
-        fps = self.num_frames / video.duration
+        fps = self.num_frames / self.duration
         state = np.argmin([np.abs(fps-60), np.abs(fps-29.97)])
         if state==0:
             self.fps = 60

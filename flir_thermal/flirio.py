@@ -94,7 +94,7 @@ class flirVideo(ImagerFile):
 
             data = np.zeros((len(frames), self.height, self.width)) + np.nan
             time = []
-            index = np.zeros(len(frames))
+            index = np.zeros(len(frames)).astype(int)
 
             for i, idx in tqdm(enumerate(frames), total=len(frames), desc='Loading video...'):
                 self.get_frame(idx)

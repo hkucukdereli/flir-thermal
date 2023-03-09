@@ -1,3 +1,4 @@
+import os
 import numpy as np
 from tqdm import tqdm
 import ffmpeg
@@ -9,12 +10,17 @@ class flirVideo(ImagerFile):
     def __init__(self, video_path):
         if type(video_path)!=str:
             self.video_path = str(video_path)
-            
+        else:
+            self.video_path = video_path
+
         # Check if the video file exists
         self.has_data = False
         if os.path.isfile(self.video_path):
             super().__init__(self.video_path)
             self.has_data = True
+
+            self.get_duration()
+            self.get_fps()
 
             # set desired units
             if self.has_unit(fnv.Unit.TEMPERATURE_FACTORY):
@@ -25,7 +31,7 @@ class flirVideo(ImagerFile):
                 # if file has no temperature calibration, use counts instead
                 self.unit = fnv.Unit.COUNTS
         else:
-            raise IOError(f"{self.path} is not found.")
+            raise IOError(f"{self.video_path} is not found.")
 
     @property
     def size(self):
@@ -39,8 +45,6 @@ class flirVideo(ImagerFile):
     @property
     def metadata(self):
         if self.has_data:
-            self.get_duration()
-            self.get_fps()
             print(f'Video is {self.duration} seconds long recorded at {self.fps} Hz.\nNumber of frames: {self.num_frames}, height: {self.height}, width: {self.width}')
             return None
         else:
@@ -49,24 +53,25 @@ class flirVideo(ImagerFile):
 
     def get_duration(self):
         if self.has_data:
+            time_diff = []
+            num_frames = self.num_frames
+            #for i in [0, num_frames]:
             self.get_frame(0)
             time_begin = self.frame_info.time
-            
-            self.get_frame(self.num_frames)
+            self.get_frame(self.num_frames-1)
             time_end = self.frame_info.time
-
-            self.duration = (time_begin - time_end).total_seconds() # video duration in seconds
+            self.duration = (time_end - time_begin).total_seconds() # video duration in seconds
 
             return self.duration
         else:
             return None
 
-    def get_duration(self)():
+    def get_fps(self):
         try:
             self.get_duration()
 
             fps = self.num_frames / self.duration
-            
+
             state = np.argmin([np.abs(fps-60), np.abs(fps-30)])
             if state==0:
                 self.fps = 60
@@ -79,18 +84,21 @@ class flirVideo(ImagerFile):
 
     def read_video(self, frames=[]):
         if self.has_data:
-            data = np.zeros((frames, self.height, self.width)) + np.nan
+            if len(frames)==0:
+                frames = np.arange(self.num_frames).astype(int)
+            else:
+                if isinstance(frames, np.ndarray):
+                    frames = frames.astype(int)
+                else:
+                    frames = np.array(frames).astype(int)
+
+            data = np.zeros((len(frames), self.height, self.width)) + np.nan
             time = []
             index = np.zeros(len(frames))
 
-            if len(frames)==0:
-                frames = np.arange(self.num_frames)
-            else:
-                pass
-
-            for i in tqdm(enumerate(frames), total=len(frames), desc='Loading video...'):
-                self.get_frame(i)
-                index[i] = i
+            for i, idx in tqdm(enumerate(frames), total=len(frames), desc='Loading video...'):
+                self.get_frame(idx)
+                index[i] = idx
                 data[i] = np.array(self.final, copy=False).reshape((self.height, self.width))
                 time.append(self.frame_info.time)
 

@@ -69,15 +69,8 @@ class flirVideo(ImagerFile):
     def get_fps(self):
         try:
             self.get_duration()
-
             fps = self.num_frames / self.duration
-
-            state = np.argmin([np.abs(fps-60), np.abs(fps-30)])
-            if state==0:
-                self.fps = 60
-            else:
-                self.fps = 30
-
+	    self.fps = int(fps)
             return self.fps
         except:
             return None

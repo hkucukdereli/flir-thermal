@@ -70,7 +70,7 @@ class flirVideo(ImagerFile):
         try:
             self.get_duration()
             fps = self.num_frames / self.duration
-	    self.fps = int(fps)
+            self.fps = int(fps)
             return self.fps
         except:
             return None

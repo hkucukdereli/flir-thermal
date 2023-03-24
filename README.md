@@ -4,7 +4,7 @@ Python wrappers to read seq files from flir thermal cameras. These functions req
 
 ## Quick Start
 
-1. Download and install FLIR Science File SDK from https://www.flir.com/products/flir-science-file-sdk/?vertical=rd%20science&segment=solutions.
+1. Download and install FLIR Science File SDK from https://www.flir.com/products/flir-science-file-sdk/?vertical=rd%20science&segment=solutions. Useful instructions: https://flir.custhelp.com/app/answers/detail/a_id/3504/~/getting-started-with-flir-science-file-sdk-for-python
 2. Locate your SDK installation folder and enter the folder containing the python package.
 ```
 cd ~/FLIR Systems/sdks/file/python

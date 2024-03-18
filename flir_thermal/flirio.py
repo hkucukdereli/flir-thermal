@@ -89,7 +89,7 @@ class flirVideo(ImagerFile):
             time = []
             index = np.zeros(len(frames)).astype(int)
 
-            for i, idx in tqdm(enumerate(frames), total=len(frames), desc='Loading video...'):
+            for i, idx in enumerate(frames): #tqdm(enumerate(frames), total=len(frames), desc='Loading video...'):
                 self.get_frame(idx)
                 index[i] = idx
                 data[i] = np.array(self.final, copy=False).reshape((self.height, self.width))
